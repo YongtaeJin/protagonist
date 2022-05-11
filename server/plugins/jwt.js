@@ -7,7 +7,7 @@ const { SECRET_KEY } = process.env;
 
 const options = {
 	algorithm : 'HS256',
-	issuer : 'ezcode',
+	issuer : 'ItsJin',
 	// expiresIn : '30m',
 };
 

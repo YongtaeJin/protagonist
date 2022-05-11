@@ -28,8 +28,8 @@ export default {
     return {
       valid: true,
       form: {
-        mb_id: "test4",
-        mb_password: "abcd1234",
+        mb_id: "test1",
+        mb_password: "abcd123",
       },
     };
   },
