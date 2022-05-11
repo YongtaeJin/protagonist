@@ -13,7 +13,7 @@ const sqlHelper = {
 			query += ` WHERE ` + where.join(' AND ');
 		}
 
-		if (cols.length > 0) {
+		if (cols.length > 0) {			
 			query = query.replace('*', cols.join(', '));
 		}
 		return { query, values };
