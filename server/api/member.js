@@ -66,4 +66,11 @@ router.get('/findPw', async(req, res)=> {
 	res.json(result);	
 });
 
+// 비밀번호 변경 
+router.patch('/modifyPassword', async (req, res) => {
+	const result = await modelCall(memberModel.modifyPassword, req.body);
+	res.json(result);
+});
+
+
 module.exports = router;

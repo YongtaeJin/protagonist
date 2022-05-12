@@ -30,8 +30,8 @@ export default {
     return {
       valid: true,
       form: {
-        mb_id: "test1",
-        mb_email: "freview@nate.com",
+        mb_id: "",
+        mb_email: "",
       },
     };
   },

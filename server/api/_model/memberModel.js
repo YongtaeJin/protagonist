@@ -146,6 +146,32 @@ const memberModel = {
 		}		
 		return member;	
 	},
+
+	async modifyPassword(data) {
+		// 유효시간이 경과된 거 삭제
+		const delQuery = `DELETE FROM ${TABLE.SEND_MAIL} WHERE sm_type=1 AND sm_expire_at < NOW()`;
+		await db.execute(delQuery);
+		// 유효시간 안에 해쉬로 검색
+		const sql = {
+			query: `SELECT sm_to FROM ${TABLE.SEND_MAIL} WHERE sm_type=? AND sm_hash=? AND sm_expire_at > NOW()`,
+			values: [1, data.hash],
+		};
+		const [[row]] = await db.execute(sql.query, sql.values);
+		// 없으면 에러
+		if (!row) {
+			throw new Error('시간이 만료되었거나 이미 처리되었습니다.');
+		}
+		// 있으면 비밀번호를 변경 하고
+		const mb_email = row.sm_to;
+		const mb_password = await jwt.generatePassword(data.password);
+		const upSql = sqlHelper.Update(TABLE.MEMBER, { mb_password }, { mb_email });
+		const [upRes] = await db.execute(upSql.query, upSql.values);
+
+		// 처리한거 삭제
+		const delSql = sqlHelper.DeleteSimple(TABLE.SEND_MAIL, {sm_hash : data.hash});
+		db.execute(delSql.query, delSql.values);
+		return upRes.affectedRows == 1;
+	},
 };
 
 module.exports = memberModel;

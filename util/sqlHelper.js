@@ -49,7 +49,24 @@ const sqlHelper = {
 		}
 		query = query.replace('{2}', wheres.join(' AND '));
 		return { query, values };
-	}
+	},
+	DeleteSimple(table, data) {
+		let query = `DELETE FROM ${table}`;
+		const wheres = [];
+		const values = [];
+
+		if(data) {
+			const keys = Object.keys(data);
+			for(key of keys) {
+				wheres.push(`${key}=?`);
+				values.push(data[key]);
+			}
+			query += ` WHERE ` + wheres.join(' AND ');
+		} else {
+			throw new Error('DELETE 구문에는 WHERE절이 있어야 합니다.');
+		}
+		return { query, values };
+	},
 };
 
 module.exports = sqlHelper;

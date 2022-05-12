@@ -26,8 +26,8 @@ export default {
     return {
       valid: true,
       form: {
-        mb_name: "test1",
-        mb_email: "test@test.com",
+        mb_name: "",
+        mb_email: "",
       },
     };
   },
