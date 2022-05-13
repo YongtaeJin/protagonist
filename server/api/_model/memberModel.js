@@ -73,6 +73,9 @@ const memberModel = {
 
 		return row.affectedRows == 1;
 	},
+	async updateMember(req) {
+		return {body : req.body, file : req.files}
+	},
 	async getMemberBy(form, cols = []) {
 		const sql = sqlHelper.SelectSimple(TABLE.MEMBER, form, cols);
 		const [[row]] = await db.execute(sql.query, sql.values);
@@ -222,6 +225,23 @@ const memberModel = {
 
 		html = html.replace('{{payload}}', JSON.stringify(payload));
 		return html;
+	},
+
+	async checkPassword(req) {
+		if(!req.user) {
+			throw new Error('로그인 되어 있지 않습니다.');
+		}
+		const data = {
+			mb_id : req.user.mb_id,
+			mb_password : await jwt.generatePassword(req.body.mb_password),
+		};
+		const sql = sqlHelper.SelectSimple(TABLE.MEMBER, data, ['COUNT(*) AS cnt']);
+		const [[{ cnt }]] = await db.execute(sql.query, sql.values);
+		if( cnt == 0) {
+			throw new Error('비밀번호가 올바르지 않습니다..');
+		} else {
+			return true;
+		}
 	},
 };
 

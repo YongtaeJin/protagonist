@@ -15,7 +15,13 @@ router.get('/duplicateCheck/:field/:value', async (req, res) => {
 router.post('/', async (req, res) => {
 	const result = await modelCall(memberModel.createMember, req);
 	res.json(result);
-})
+});
+
+// 회원정보수정
+router.patch('/', async (req, res) => {
+	const result = await modelCall(memberModel.updateMember, req);
+	res.json(result);
+});
 
 // 로그인
 router.post('/loginLocal', async (req, res) => {
@@ -86,6 +92,12 @@ router.get('/social-callback/:provider',  (req, res)=>{
 		const result = await modelCall(memberModel.socialCallback, req, res, err, member);
 		res.end(result);
 	})(req, res);
+});
+
+// 비밀번호 확인
+router.post('/checkPassword', async (req, res) => {
+	const result = await modelCall(memberModel.checkPassword, req);
+	res.json(result);
 });
 
 

@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import tr from 'vuetify/es5/locale/tr';
 export default {
   name: "InputDuplicateCheck",
   model: {
@@ -49,7 +50,7 @@ export default {
   },
   data() {
     return {
-      isCheck: false,
+      isCheck: this.origin ? true : !this.cbCheck,
       loading: false,
 			errMsg : "",
 			successMsg : "",
