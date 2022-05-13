@@ -76,6 +76,8 @@ router.patch('/modifyPassword', async (req, res) => {
 router.get('/loginGoogle', passport.authenticate("google", { scope: ["email", "profile"] }));
 // 카카오 로그인 요청
 router.get('/loginKakao', passport.authenticate('kakao'));
+// 네이버 로그인 요청
+router.get('/loginNaver', passport.authenticate('naver'));
 
 // 구글 로그인 콜백
 router.get('/social-callback/:provider',  (req, res)=>{
