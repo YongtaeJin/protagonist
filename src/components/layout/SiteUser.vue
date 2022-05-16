@@ -30,20 +30,20 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-text>
-          <user-update-form
-            :member="member"
-            :isLoading="isLoading"
-            @onSave="save"
-          />
-        </v-card-text>
+				<v-card-text>
+					<user-update-form
+						v-if="dialog"
+						:member="member"
+						:isLoading="isLoading"
+						@onSave="save"
+					/>
+				</v-card-text>
       </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
-import da from 'vuetify/es5/locale/da';
 import { mapActions, mapState } from "vuex";
 import UserUpdateForm from '../auth/UserUpdateForm.vue';
 import DisplayAvatar from "./DisplayAvatar.vue";
@@ -80,28 +80,32 @@ export default {
       this.$vuetify.theme.dark = mode;
     },
     async openDialog() {
-      // this.dialog = true;
-			// 소셜로그인 아니면 비밀번호를 확인
       this.dialog = true;
-      return;
+			return;
+			// 소셜로그인 아니면 비밀번호를 확인
 			if(this.member.mb_provider) {
 				this.dialog = true;
 			} else {
 				const mb_password = await this.$ezNotify.prompt(
 					"비밀번호를 입력하세요.",
 					"회원정보 수정",
-					{icon : "mdi-alert", formType : 'password'}                                 
+					{icon : "mdi-alert", formType : 'password'}
 				);
-        this.dialog = await this.checkPassword({mb_password});
+				this.dialog = await this.checkPassword({mb_password});
 			}
     },
     closeDialog() {
       this.dialog = false;
     },
-    async save(form) {
-      const data = await this.updateMember(form);
-      console.log(data);
-    }
+		async save(form) {
+			this.isLoading = true;
+			const data = await this.updateMember(form);
+			if(data) {
+				this.$toast.info(`${this.$store.state.user.member.mb_name}님 정보 수정하였습니다.`);
+				this.closeDialog();
+			}
+			this.isLoading = false;
+		}
   },
 };
 </script>

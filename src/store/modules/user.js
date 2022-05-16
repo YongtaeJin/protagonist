@@ -52,30 +52,33 @@ export const actions = {
 		return mb_name;
 	},
 	async findIdLocal(ctx, form) {
-		const { $axios } = Vue.prototype;
+		const {$axios} = Vue.prototype;
 		const query = qs.stringify(form);
-		const data = await $axios.get(`/api/member/findId?${ query }`);		
+		const data = await $axios.get(`/api/member/findId?${query}`);
 		return data;
 	},
 	async findPwLocal(ctx, form) {
-		const { $axios } = Vue.prototype;
+		const {$axios} = Vue.prototype;
 		const query = qs.stringify(form);
-		const data = await $axios.get(`/api/member/findPw?${ query }`);		
+		const data = await $axios.get(`/api/member/findPw?${query}`);
 		return data;
 	},
 	async modifyPassword(ctx, form) {
-		const { $axios } = Vue.prototype;		
-		const data = await $axios.patch(`/api/member/modifyPassword`, form);		
+		const {$axios} = Vue.prototype;
+		const data = await $axios.patch(`/api/member/modifyPassword`, form);
 		return data;
 	},
 	async checkPassword(ctx, form) {
-		const { $axios } = Vue.prototype;		
-		const data = await $axios.post(`/api/member/checkPassword`, form);		// 암호전송
+		const {$axios} = Vue.prototype;
+		const data = await $axios.post(`/api/member/checkPassword`, form);
 		return data;
 	},
 	async updateMember({commit}, form) {
-		const { $axios } = Vue.prototype;		
-		const data = await $axios.patch(`/api/member`, form);		       
-		return data;
+		const {$axios} = Vue.prototype;
+		const data = await $axios.patch(`/api/member`, form);
+		if(data) {
+			commit('SET_MEMBER', data);
+		}
+		return !!data;
 	}
 };

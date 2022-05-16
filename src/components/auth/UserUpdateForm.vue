@@ -1,10 +1,10 @@
 <template>
-  <v-form 
-    v-if="form"  
-    @submit.prevent="save" 
-    ref="form" 
-    v-model="valid" 
-    lazy-validation  
+  <v-form
+    v-if="form"
+    @submit.prevent="save"
+    ref="form"
+    v-model="valid"
+    lazy-validation
   >
     <input-duplicate-check
       ref="id"
@@ -18,22 +18,24 @@
       label="이름"
       v-model="form.mb_name"
       prepend-icon="mdi-card-account-details-outline"
-      :rules="rules.name({required : false})"
+      :rules="rules.name()"
     />
 
-    <input-password
-      label="비밀번호"
-      v-model="form.mb_password"
-      prepend-icon="mdi-lock"
-      :rules="rules.password()"
-    />
+    <template v-if="!member.mb_provider">
+      <input-password
+        label="비밀번호"
+        v-model="form.mb_password"
+        prepend-icon="mdi-lock"
+        :rules="rules.password({ required: false })"
+      />
 
-    <input-password
-      label="비밀번호 확인"
-      v-model="confirmPw"
-      prepend-icon="mdi-lock"
-      :rules="[rules.matchValue(form.mb_password)]"
-    />
+      <input-password
+        label="비밀번호 확인"
+        v-model="confirmPw"
+        prepend-icon="mdi-lock"
+        :rules="[rules.matchValue(form.mb_password)]"
+      />
+    </template>
 
     <input-duplicate-check
       ref="email"
@@ -55,13 +57,14 @@
 
     <div class="d-flex align-center">
       <display-avatar :member="member" />
-      <v-file-input 
-        class="ml-3"
+      <v-file-input
+        class="ml-2"
         label="회원이미지"
         v-model="form.mb_image"
-        :prepend-icon = "null"
+        :prepend-icon="null"
         accept="image/jpg,image/png"
       />
+      <v-checkbox v-model="form.deleteImage" label="삭제"> </v-checkbox>
     </div>
 
     <input-radio
@@ -76,27 +79,29 @@
       v-model="form.mb_phone"
       label="전화번호"
       prepend-icon="mdi-phone"
-			:rules="rules.phone()"
+      :rules="rules.phone()"
     />
 
-		<input-post 
-			:zipcode.sync="form.mb_zip"
-			:addr1.sync="form.mb_addr1"
-			:addr2.sync="form.mb_addr2"
-		/>
+    <input-post
+      :zipcode.sync="form.mb_zip"
+      :addr1.sync="form.mb_addr1"
+      :addr2.sync="form.mb_addr2"
+    />
 
-    <v-btn type="submit" block color="primary" :loading="isLoading">회원가입</v-btn>
+    <v-btn type="submit" block color="primary" :loading="isLoading">
+      정보 수정
+    </v-btn>
   </v-form>
 </template>
 
 <script>
-import { deepCopy } from '../../../util/lib';
+import { deepCopy } from "../../../util/lib";
 import validateRules from "../../../util/validateRules";
 import InputDate from "../InputForms/InputDate.vue";
 import InputDuplicateCheck from "../InputForms/InputDuplicateCheck.vue";
 import InputPassword from "../InputForms/InputPassword.vue";
 import InputPhone from "../InputForms/InputPhone.vue";
-import InputPost from '../InputForms/InputPost.vue';
+import InputPost from "../InputForms/InputPost.vue";
 import InputRadio from "../InputForms/InputRadio.vue";
 import DisplayAvatar from "../layout/DisplayAvatar.vue";
 
@@ -112,19 +117,19 @@ export default {
   },
   name: "UserUpdateForm",
   props: {
-    admMode : {
-      type : Boolean,
-      default : false,
+    admMode: {
+      type: Boolean,
+      default: false,
     },
-    member : {
-      type : Object,
-      required : true,
-    } ,   
+    member: {
+      type: Object,
+      required: true,
+    },
     cbCheckEmail: {
       type: Function,
       default: null,
     },
-		isLoading : Boolean,
+    isLoading: Boolean,
   },
   data() {
     return {
@@ -136,7 +141,7 @@ export default {
         { label: "여자", value: "F" },
       ],
     };
-  }, 
+  },
   computed: {
     rules: () => validateRules,
   },
@@ -144,6 +149,7 @@ export default {
     this.form = deepCopy(this.member);
     this.form.mb_password = "";
     this.form.admMode = this.admMode;
+    this.form.deleteImage = false;
     delete this.form.mb_create_at;
     delete this.form.mb_create_ip;
     delete this.form.mb_update_at;
@@ -151,7 +157,9 @@ export default {
     delete this.form.mb_login_at;
     delete this.form.mb_login_ip;
     delete this.form.mb_leave_at;
-    console.log(this.form);
+  },
+  destroyed() {
+    this.form = null;
   },
   methods: {
     async save() {
@@ -162,12 +170,12 @@ export default {
       if (!this.$refs.email.validate()) return;
 
       // this.$emit('onSave', this.form);
-			const formData = new FormData();
-			const keys = Object.keys(this.form);
-			for(const key of keys) {
-				formData.append(key, this.form[key]);
-			}
-			this.$emit('onSave', formData);
+      const formData = new FormData();
+      const keys = Object.keys(this.form);
+      for (const key of keys) {
+        formData.append(key, this.form[key]);
+      }
+      this.$emit("onSave", formData);
     },
   },
 };

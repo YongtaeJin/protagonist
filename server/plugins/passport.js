@@ -7,7 +7,7 @@ const memberModel = require('../api/_model/memberModel');
 
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const KakaoStrategy = require('passport-kakao').Strategy;
-const NaverStrategy = require('passport-Naver').Strategy;
+const NaverStrategy = require('passport-naver').Strategy;
 
 const {
 	GOOGLE_CLIENT_ID,
