@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import modules from "./modules";
+import qs from 'qs';
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -77,8 +78,19 @@ const store = new Vuex.Store({
 			} else {
 				await dispatch('user/initUser');
 			} 
-			commit('SET_APP_READY');
-		}
+			commit('SET_APP_READY');			
+		},
+		async configDuplicate(ctx, payload) {
+			const {$axios} = Vue.prototype;
+			const query = qs.stringify(payload);
+			const data = await $axios.get(`/api/config/duplicateCheck?${ query}`);
+			return data;
+		},
+		async configSave({commit}, form) {
+			const {$axios} = Vue.prototype;			
+			const data = await $axios.post(`/api/config`, form);
+			return data;
+		},
 	},
 	modules,
 });
