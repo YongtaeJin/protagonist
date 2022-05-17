@@ -17,5 +17,10 @@ router.post('/', async(req, res) => {
     res.json(result);
 });
 
+router.put('/', async (req,res) => {
+    const result = await modelCall(configModel.sortUpdate, req);
+    res.json(result);
+});
+
 
 module.exports = router;
