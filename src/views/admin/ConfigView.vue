@@ -9,6 +9,15 @@
                 </tooltip-btn>
             </v-btn>
         </v-toolbar>
+        <v-row>
+            <v-col>
+                <v-tabs v-model="group" background-color="primary" dark>
+                    <v-tab v-for="item in groupItems" :key="item">
+                        {{ item }}
+                    </v-tab>
+                </v-tabs>
+            </v-col>
+        </v-row>
 
         <ez-dialog label="설정 추가" ref="dialog" max-width="500" dark color="primary" persistent>
             <config-form @save="save" :keyCheck="keyCheck">                
@@ -19,7 +28,7 @@
 </template>
 
 <script>
-import TooltipBtn from '@/components/etc/TooltipBtn.vue'
+import TooltipBtn from '@/components/etc/TooltipBtn.vue';
 import EzDialog from '@/components/etc/EzDialog.vue';
 import ConfigForm from './ConfigComponent/ConfigForm.vue';
 import { mapActions } from 'vuex';
@@ -27,6 +36,37 @@ import { mapActions } from 'vuex';
 export default {
   components: { TooltipBtn, EzDialog, ConfigForm },
     name : 'Adminconfig',
+    data() {
+        return {
+            items : [],
+            group : -1,
+            curItems : [],
+            item : null,
+        }
+    },
+    computed : {
+        groupItems(){
+            const sets = new Set();
+            this.items.forEach((item) => {
+                sets.add(item.cf_group);
+            });
+            return [...sets];
+        },
+        groupNmae() {
+            return this.groupItems[this.group] || "";
+        }
+    },
+    watch : {
+        group() {
+            this.curItems = this.items.filter((item) => {
+                return item.cf_group == this.groupNmae;
+            });
+            console.log(this.curItems);
+        }
+    },
+    mounted() {
+        this.fetchData();
+    },
     methods : {  
         ...mapActions(['configDuplicate', 'configSave']),
         addConfig() {            
@@ -42,6 +82,10 @@ export default {
                 value,
             }
             return await this.configDuplicate(payload);
+        },
+        async fetchData() {
+            this.items = await this.$axios.get('/api/config?all=true');
+            console.log(this.groupItems);
         },
     },
 }

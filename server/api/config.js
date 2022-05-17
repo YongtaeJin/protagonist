@@ -2,6 +2,10 @@ const router = require('express').Router();
 const { modelCall } = require('../../util/lib');
 const configModel = require('./_model/configModel');
 
+router.get('/', async (req, res) => {
+    const result = await modelCall(configModel.getItems, req);
+    res.json(result);
+});
 
 router.get('/duplicateCheck', async(req, res) => {
     const result = await modelCall(configModel.duplicateCheck, req.query);
@@ -9,7 +13,7 @@ router.get('/duplicateCheck', async(req, res) => {
 });
 
 router.post('/', async(req, res) => {
-    const result = await modelCall(configModel.post, req);
+    const result = await modelCall(configModel.saveConfig, req);
     res.json(result);
 });
 
