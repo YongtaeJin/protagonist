@@ -10,8 +10,9 @@
             </v-btn>
         </v-toolbar>
 
-        <ez-dialog label="설정 추가" ref="dialog" max-width="500" dark color="primary">
-            <v-btn @click="save">닫기</v-btn>
+        <ez-dialog label="설정 추가" ref="dialog" max-width="500" dark color="primary" persistent>
+            <config-form @save="save">                
+            </config-form>
         </ez-dialog>
 
   </v-container>
@@ -20,14 +21,16 @@
 <script>
 import TooltipBtn from '@/components/etc/TooltipBtn.vue'
 import EzDialog from '@/components/etc/EzDialog.vue';
+import ConfigForm from './ConfigComponent/ConfigForm.vue';
 export default {
-  components: { TooltipBtn, EzDialog },
+  components: { TooltipBtn, EzDialog, ConfigForm },
     name : 'Adminconfig',
     methods : {
         addConfig() {            
             this.$refs.dialog.open();
         },
-        save() {
+        async save(form) {
+            console.log(form);
 			this.$refs.dialog.close();
 		},
     }
