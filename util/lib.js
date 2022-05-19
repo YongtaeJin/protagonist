@@ -29,9 +29,9 @@ const lib = {
 				return parent;
 			}
 			parent = parent.$parent
-		}		
+		}
 		return null;
-	},
+	}
 }
 
 module.exports = lib;
