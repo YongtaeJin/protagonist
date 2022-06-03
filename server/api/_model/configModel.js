@@ -6,7 +6,7 @@ const { LV, isGrant } = require('../../../util/level');
 const configModel = {
 	async load() {
 		const sql = sqlHelper.SelectSimple(TABLE.CONFIG, null, ['cf_key', 'cf_val', 'cf_client', 'cf_type']);
-		const [rows] = await db.execute(sql.query, sql.values);
+		const [rows] = await db.execute(sql.query, sql.values);		
 		global.$config = {
 			server: {},
 			client: {}
@@ -65,6 +65,8 @@ const configModel = {
 			};
 			const sql = sqlHelper.SelectSimple(TABLE.CONFIG, where, [], sort);
 			const [rows] = await db.execute(sql.query, sql.values);
+
+			console.log(rows);
 			return rows;
 		} else {
 			return $config.client;

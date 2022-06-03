@@ -15,4 +15,5 @@ export default (ctx) => {
 			return resolve(app);
 		}, reject)
 	});
-}
+};
+

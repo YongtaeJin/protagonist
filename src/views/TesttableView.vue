@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import de from 'vuetify/es5/locale/de';
 
 export default {    
 	name :"TesttableView",
@@ -23,25 +22,29 @@ export default {
       return {
         headers: [
           {
-            text: '성명',
-            value: 'mb_name',
+            text: '시간',
+            value: 'D_OPENTIME',
           },
-          { text: 'ID', value: 'mb_id' },
-          { text: '구분', value: 'mb_provider' },
-          { text: '생일', value: 'mb_birth' },
-          { text: '이메일', value: 'mb_email' },
-          { text: '연락처', value: 'mb_phone' },
+          { text: 'ID', value: 'I_SYSTEM' },
+          { text: '구분', value: 'I_WINDOW' },
+          { text: '생일', value: 'N_WINDOW' },
+          { text: '이메일', value: 'I_USERID' },
+          { text: '연락처', value: 'N_USERNM' },
+
         ],
         desserts : [],
       }
     },
      mounted() {
          this.fetchData();
-     },
-     methods : {
-         async fetchData() {
-             this.desserts = await this.$axios.get('/api/testtableview');             
-         },
+    },
+    methods : {
+      async fetchData() {        
+        
+        this.desserts = await this.$axios.get("/api/testtableview");   
+        
+             
+      },
      },
 
 }
