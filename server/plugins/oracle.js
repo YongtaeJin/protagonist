@@ -23,8 +23,7 @@ const oracleDbRelease = function(conn) {
 					  connectString :  process.env.ORACLE_GOODMANTNS					                   
 				  })
 		  .then(function(connection){
-			  //console.log("sql log: " + sql + " params " + bindParams);
-			  
+			  //console.log("sql log: " + sql + " params " + bindParams);			  
 			  connection.execute(sql, bindParams, options)
 			  .then(function(results) {
 				  resolve(results);
@@ -33,7 +32,7 @@ const oracleDbRelease = function(conn) {
 				  });
 			  })
 			  .catch(function(err) {
-				  console.log(err);
+				  //console.log(err);
 				  reject(err);
    
 				  process.nextTick(function() {
