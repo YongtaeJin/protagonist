@@ -98,6 +98,21 @@ const sqlHelper = {
 		}
 		return { query, values };
 	},
+
+	OracleInsert(table, data) {
+
+		let query = `INSERT INTO ${table} ({1}) VALUES ({2})`;
+		const keys = Object.keys(data);
+		//const prepare = new Array(keys.length).fill('?').join(', ');
+		const prepare = Array(keys.length).fill().map((_, index) => ":"+(index + 1)).join(', ');
+		const values = [];
+		for (const key of keys) {
+			values.push(data[key]);
+		}
+		query = query.replace('{1}', keys.join(', '));
+		query = query.replace('{2}', prepare);
+		return { query, values };
+	},
 };
 
 module.exports = sqlHelper;

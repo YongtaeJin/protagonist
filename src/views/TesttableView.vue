@@ -41,12 +41,13 @@ export default {
     methods : {
        async fetchData() {                
         
-        //this.desserts = await this.$axios.post("/api/testtableview");
-         console.log("호출전");
-         const data = await this.$axios.post("/api/testtableview");
-         console.log(data);
-         console.log("호출후");
-      },
+        this.desserts = await this.$axios.post("/api/testtableview");
+      //    console.log("호출전");
+      //    const data = await this.$axios.post("/api/testtableview");
+      //    console.log(data);
+      //    console.log("호출후");
+      //    this.desserts = data;
+       },
      },
 
 }

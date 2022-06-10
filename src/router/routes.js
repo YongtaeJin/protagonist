@@ -37,6 +37,16 @@ const routes = [
 		component: () => import(/* webpackChunkName: "AdmConfig" */ '../views/TesttableView.vue')
 	},
 	{
+		path: '/menu1-1',
+		name: 'ListTable',
+		component: () => import(/* webpackChunkName: "AdmConfig" */ '../views/Menu1_1.vue')
+	},
+	{
+		path: '/menu1-2',
+		name: 'InsetChkView',
+		component: () => import(/* webpackChunkName: "AdmConfig" */ '../views/Menu1_2.vue')
+	},
+	{
 		path: '*',
 		name: 'Error',
 		component: () => import(/* webpackChunkName: "error" */ '../views/ErrorView.vue')

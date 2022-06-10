@@ -40,12 +40,13 @@ const store = new Vuex.Store({
 			commit('SET_APP_READY');
 		},
 		async configDuplicate(ctx, payload) {
+			console.log(payload);
 			const { $axios } = Vue.prototype;
 			const query = qs.stringify(payload);
 			const data = await $axios.get(`/api/config/duplicateCheck?${query}`);
 			return data;
 		},
-		async configSave({ commit }, form) {
+		async configSave({ commit }, form) {			
 			const { $axios } = Vue.prototype;
 			const data = await $axios.post(`/api/config`, form);
 			return data;
@@ -59,7 +60,14 @@ const store = new Vuex.Store({
 				}
 			}
 
-		}
+		},
+		async syTable6Save({commit}, vaule) {
+			const { $axios } = Vue.prototype;
+			//console.log("syTable6Save 값", $axios);
+			console.log('vaule', vaule);
+			const data = await $axios.post(`/api/goodman/sytemp6Save`, vaule);
+			console.log('syTable6Save --- 끝');
+		},
 
 	},
 	modules,
