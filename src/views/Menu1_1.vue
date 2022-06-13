@@ -56,7 +56,7 @@
             </v-dialog>
         </v-toolbar>
         </template>
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
         </template>    
@@ -127,7 +127,8 @@ export default {
     },
 
     methods: {        
-        ...mapActions(["syTable6Save"]),
+        ...mapActions(["syTable6Save", "syTable6Updtae"]),
+        //...mapActions(["configDuplicate", "configSave"]),
 
         initialize () {
             this.desserts = []
@@ -148,6 +149,7 @@ export default {
         },
 
         deleteItemConfirm () {
+            const data = this.$axios.delete(`/api/goodman/${this.editedItem.S_SER}`);
             this.desserts.splice(this.editedIndex, 1)
             this.closeDelete()
         },
@@ -170,12 +172,13 @@ export default {
 
         save () {
             if (this.editedIndex > -1) {
+                const data = this.syTable6Updtae(this.editedItem);
                 Object.assign(this.desserts[this.editedIndex], this.editedItem)
             } else {
-                //console.log("payload 시작 ", this.editedItem)
                 const data =  this.syTable6Save(this.editedItem)
-                //console.log("payload 끝 ", this.editedItem)
-                this.desserts.push(this.editedItem)
+                if (data) {
+                    this.desserts.push(this.editedItem)
+                }
             }
             this.close()
         },

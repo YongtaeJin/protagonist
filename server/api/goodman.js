@@ -10,7 +10,17 @@ router.get('/sytemp6', async (req, res) => {
 
 router.post('/sytemp6Save', async (req, res) => {
     const data = await modelCall(goodmanModel.syTemp6Save, req);
-    res.json('sytemp6Save 결과');
+    res.json(data);
+});
+
+router.post('/sytemp6Updtae', async (req, res) => {
+    const data = await modelCall(goodmanModel.sytemp6Updtae, req);        
+    res.json(data);
+});
+
+router.delete('/:S_SER', async (req,res) => {    
+    const result = await modelCall(goodmanModel.syTemp6Delete, req);
+    res.json(result);
 });
 
 

@@ -63,10 +63,15 @@ const store = new Vuex.Store({
 		},
 		async syTable6Save({commit}, vaule) {
 			const { $axios } = Vue.prototype;
-			//console.log("syTable6Save 값", $axios);
-			console.log('vaule', vaule);
 			const data = await $axios.post(`/api/goodman/sytemp6Save`, vaule);
-			console.log('syTable6Save --- 끝');
+			return data;
+		},
+
+		async syTable6Updtae({commit}, vaule) {			
+			const { $axios } = Vue.prototype;			
+			const data = await $axios.post(`/api/goodman/sytemp6Updtae`, vaule);
+			//return data;
+			return 1;
 		},
 
 	},

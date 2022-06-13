@@ -113,6 +113,43 @@ const sqlHelper = {
 		query = query.replace('{2}', prepare);
 		return { query, values };
 	},
+	OracleUpdate(table, data, where) {
+		let query = `UPDATE ${table} SET {1} WHERE {2}`;
+		const keys = Object.keys(data);
+		const sets = [];
+		const values = [];
+		for (const key of keys) {
+			sets.push(`${key}=:` + key.toString());
+			values.push(data[key]);
+		}
+		query = query.replace('{1}', sets.join(', '));
+
+		const keys2 = Object.keys(where);
+		const wheres = [];
+		for (const key of keys2) {
+			wheres.push(`${key}=:` + key.toString());
+			values.push(where[key]);
+		}
+		query = query.replace('{2}', wheres.join(' AND '));
+		return { query, values };
+	},
+	OracleDeleteSimple(table, data) {
+		let query = `DELETE FROM ${table}`;
+		const wheres = [];
+		const values = [];
+
+		if(data) {
+			const keys = Object.keys(data);
+			for(key of keys) {
+				wheres.push(`${key}=:` + key.toString());
+				values.push(data[key]);
+			}
+			query += ` WHERE ` + wheres.join(' AND ');
+		} else {
+			throw new Error('DELETE 구문에는 WHERE절이 있어야 합니다.');
+		}
+		return { query, values };
+	},
 };
 
 module.exports = sqlHelper;
